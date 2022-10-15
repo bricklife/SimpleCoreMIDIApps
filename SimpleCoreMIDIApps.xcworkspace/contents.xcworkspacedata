@@ -4,4 +4,7 @@
    <FileRef
       location = "group:VirtualSource/VirtualSource.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:VirtualDestination/VirtualDestination.xcodeproj">
+   </FileRef>
 </Workspace>
