@@ -14,7 +14,7 @@ class Model: ObservableObject {
     private var clientRef = MIDIClientRef()
     
     private var sourceRef = MIDIEndpointRef()
-    private var midi10SourceRef = MIDIEndpointRef()
+    private var umpSourceRef = MIDIEndpointRef()
     
     private let timebase: mach_timebase_info = {
         var timebase = mach_timebase_info()
@@ -26,12 +26,12 @@ class Model: ObservableObject {
         MIDIClientCreate("VirtualSource - Cient" as CFString, nil, nil, &clientRef)
         
         MIDISourceCreate(clientRef, "VirtualSource - Deprecated API" as CFString, &sourceRef)
-        MIDISourceCreateWithProtocol(clientRef, "VirtualSource - UMP MIDI 1.0" as CFString, ._1_0, &midi10SourceRef)
+        MIDISourceCreateWithProtocol(clientRef, "VirtualSource - UMP MIDI 1.0" as CFString, ._1_0, &umpSourceRef)
     }
     
     deinit {
         MIDIEndpointDispose(sourceRef)
-        MIDIEndpointDispose(midi10SourceRef)
+        MIDIEndpointDispose(umpSourceRef)
     }
     
     func sendNoteOn(channel: UInt8, note: UInt8, velocity: UInt8, delay: Double? = nil) {
@@ -69,6 +69,6 @@ class Model: ObservableObject {
         
         var eventList = MIDIEventList(protocol: ._1_0, numPackets: 1, packet: packet)
         
-        MIDIReceivedEventList(midi10SourceRef, &eventList)
+        MIDIReceivedEventList(umpSourceRef, &eventList)
     }
 }
